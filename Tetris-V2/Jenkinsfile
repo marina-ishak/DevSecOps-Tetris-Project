@@ -14,7 +14,7 @@ pipeline{
             steps {
                 script {
                     echo "Building Tetris Docker Image..."
-                    sh "docker build -t ${ECR_REPO_NAME}:${IMAGE_TAG} ."
+                    sh "docker build -t ${ECR_REPO_NAME}:${IMAGE_TAG} -f Tetris-V2/Dockerfile Tetris-V2/."
                     sh "docker tag ${ECR_REPO_NAME}:${IMAGE_TAG} ${ECR_REGISTRY}/${ECR_REPO_NAME}:${IMAGE_TAG}"
                 }
             }
