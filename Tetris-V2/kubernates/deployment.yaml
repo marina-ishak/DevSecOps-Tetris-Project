@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tetris-app
+  namespace: tetris
+  labels:
+    app: tetris
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  replicas: 3
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: tetris
+  template:
+    metadata:
+      labels:
+        app: tetris
+    spec:
+      serviceAccountName: tetris-sa
+      securityContext:
+        fsGroup: 2000
+      containers:
+        - name: tetris
+          image: davidnabil/teetee:v1.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 10

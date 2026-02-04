@@ -1,0 +1,8 @@
+tetris-gitops/
+│
+├── namespace.yaml
+├── deployment.yaml
+├── service.yaml
+├── ingress.yaml    
+├── hpa.yaml       
+└── argocd-application.yaml

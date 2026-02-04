@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tetris-alb-ingress
+  namespace: tetris
+  annotations:
+    kubernetes.io/ingress.class: alb
+
+    # ALB exposure
+    alb.ingress.kubernetes.io/scheme: internet-facing
+
+    # Pod-level routing (recommended)
+    alb.ingress.kubernetes.io/target-type: ip
+
+    # Listener configuration
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
+
+    # Health check
+    alb.ingress.kubernetes.io/healthcheck-path: /
+
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: tetris-service
+                port:
+                  number: 80
